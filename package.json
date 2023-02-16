@@ -1,0 +1,21 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "prisma": "^4.10.1",
+    "supabase": "^1.38.2",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.10.1",
+    "@supabase/supabase-js": "^2.7.1"
+  },
+  "scripts": {
+    "init": "npx prisma migrate deploy && npx prisma db seed",
+    "db-stop": "npx supabase stop --backup",
+    "db-start": "npx supabase start",
+    "update-types": "npx supabase gen types typescript --local --schema public > src/types/supabaseTypes.ts"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}
