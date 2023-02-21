@@ -9,7 +9,7 @@ const client = createClient<Database>(
 const main = async () => {
   const postRequest = await client
     .from("post")
-    .select("*, user (*), comment (*)")
+    .select("*, user(*), comment (*)")
     .eq("title", "Test title");
 
   if (postRequest.error) {
@@ -17,7 +17,28 @@ const main = async () => {
     return;
   }
 
-  console.log(postRequest.data);
+  console.log(JSON.stringify(postRequest.data, null, 2));
 };
 
-main();
+const withJoinTableQuery = async () => {
+  console.log("Querying with Join Table and named relationships");
+  const postRequest = await client
+    .from("post")
+    .select("*, author:authorId(*), comment (*), likedBy:_LikedPosts(user(*))") // the colon syntax is optional and allows you to defined a custom name on a join field
+    .eq("title", "Test title");
+
+  // alternative:
+  // const postRequest = await client
+  // .from("post")
+  // .select("*, user(*), comment (*), _LikedPosts(user(*))")
+  // .eq("title", "Test title");
+
+  if (postRequest.error) {
+    console.log("error:", postRequest.error);
+    return;
+  }
+
+  console.log(JSON.stringify(postRequest.data, null, 2));
+};
+
+main().then((_) => withJoinTableQuery());

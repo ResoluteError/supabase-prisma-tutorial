@@ -11,11 +11,13 @@ const getUsers = (): Prisma.userCreateInput[] => [
 const getPosts = (users: user[]): Prisma.postCreateInput[] => [
   {
     author: { connect: { id: users[0].id } },
+    likedBy: { connect: [{ id: users[1].id }, { id: users[2].id }] },
     text: "test post 1",
     title: "Test title",
   },
   {
     author: { connect: { id: users[1].id } },
+    likedBy: { connect: [{ id: users[2].id }] },
     text: "test post 2",
     title: "Test title 2",
   },

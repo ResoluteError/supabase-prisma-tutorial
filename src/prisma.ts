@@ -5,10 +5,10 @@ const client = new PrismaClient();
 const main = async () => {
   const post = await client.post.findFirst({
     where: { title: "Test title" },
-    include: { author: true, comments: true },
+    include: { author: true, comments: true, likedBy: true },
   });
 
-  console.log(post);
+  console.log(JSON.stringify(post, null, 2));
 
   if (post) {
     const newPost = await client.post.update({
@@ -16,7 +16,7 @@ const main = async () => {
       where: { id: post.id },
     });
 
-    console.log("updatedPost:", newPost);
+    console.log(JSON.stringify(newPost, null, 2));
   }
 
   client.$disconnect();
